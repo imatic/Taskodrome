@@ -125,10 +125,30 @@ function createShortenedText(text, maxWidth, maxHeight, isSingleLine) {
 
     if (shortenedText.length < 8) {
       return textGr;
-    } else {
-      text = text.substring(0, text.length - 3);
-      shortenedText = text + "...";
     }
+
+    var substract = 3;
+
+    if (!isSingleLine) {
+      if (resHeight > maxHeight) {
+        var removeChars = 0;
+        var currentHeight = resHeight;
+        for (var i = textGr.textLines.length - 1; i >= 0; i--) {
+          currentHeight -= textGr.getHeightOfLine(i);
+          removeChars += textGr.textLines[i].length;
+          if (currentHeight <= maxHeight) {
+            break
+          }
+        }
+
+        if (removeChars > substract) {
+          substract = removeChars;
+        }
+      }
+    }
+
+    text = text.substring(0, text.length - substract);
+    shortenedText = text + "...";
   } while (resWidth > maxWidth || resHeight > maxHeight);
 
   return textGr;
