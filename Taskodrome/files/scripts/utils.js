@@ -89,21 +89,12 @@ function getPathToMantisFile(window, filename) {
 };
 
 function createShortenedText(text, maxWidth, maxHeight, isSingleLine) {
-  var textGr = new fabric.Text(text, {
-    fontFamily: "Arial",
-    fontSize: fabric.util.parseUnit("12px"),
-
-    evented: false,
-    hasBorders: false,
-    hasControls: false,
-    selectable: false
-  });
-
-  var resWidth = Math.round(textGr.getScaledWidth());
-  var resHeight = Math.round(textGr.getScaledHeight());
-
+  var textGr = null;
+  var resWidth = null;
+  var resHeight = null;
   var shortenedText = text;
-  while (resWidth > maxWidth || resHeight > maxHeight) {
+
+  do {
     if (isSingleLine) {
       textGr = new fabric.Text(shortenedText, {
         fontFamily: "Arial",
@@ -138,7 +129,7 @@ function createShortenedText(text, maxWidth, maxHeight, isSingleLine) {
       text = text.substring(0, text.length - 3);
       shortenedText = text + "...";
     }
-  };
+  } while (resWidth > maxWidth || resHeight > maxHeight);
 
   return textGr;
 };
